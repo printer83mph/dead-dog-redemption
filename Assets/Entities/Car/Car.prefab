@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: a53a06cd932a0cd4ab7ce1d966235659, type: 3}
+  - {fileID: 2100000, guid: a284a75221afa524b83d81005ebc3184, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,7 +109,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414373150645528833}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f6d708e4d1f93844fa69e9b233ddc73c, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -175,8 +175,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torque: 0
-  friction: 5000
-  suspensionHeight: 0.3
+  friction: 1000
+  suspensionHeight: 0.4
   suspensionStrength: 3000
   turnAmt: 30
 --- !u!1 &2579838465202590647
@@ -279,6 +279,7 @@ MonoBehaviour:
   sensitivity: 100
   maxXAngle: 85
   controlled: 0
+  chase: 0
   offset: {x: 0, y: 1, z: 0}
   distance: 7
 --- !u!1 &2864727067632935633
@@ -338,7 +339,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: b2b6160f3992bf34dbd18585d2b322ba, type: 3}
+  - {fileID: 2100000, guid: 8aad452c90cc6a64c9883c7910613773, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -416,7 +417,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: b2b6160f3992bf34dbd18585d2b322ba, type: 3}
+  - {fileID: 2100000, guid: 8aad452c90cc6a64c9883c7910613773, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -494,7 +495,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: b2b6160f3992bf34dbd18585d2b322ba, type: 3}
+  - {fileID: 2100000, guid: 8aad452c90cc6a64c9883c7910613773, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -559,9 +560,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4305dfd4f18154aa50c5979922646a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 4000
-  friction: 5000
-  suspensionHeight: 0.3
+  torque: 7000
+  friction: 1000
+  suspensionHeight: 0.4
   suspensionStrength: 3000
   turnAmt: 0
 --- !u!1 &6285964664833593101
@@ -608,9 +609,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4305dfd4f18154aa50c5979922646a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 4000
-  friction: 5000
-  suspensionHeight: 0.3
+  torque: 7000
+  friction: 1000
+  suspensionHeight: 0.4
   suspensionStrength: 3000
   turnAmt: 0
 --- !u!1 &7659964375885506827
@@ -670,7 +671,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: b2b6160f3992bf34dbd18585d2b322ba, type: 3}
+  - {fileID: 2100000, guid: 8aad452c90cc6a64c9883c7910613773, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -736,7 +737,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torque: 0
-  friction: 5000
-  suspensionHeight: 0.3
+  friction: 1000
+  suspensionHeight: 0.4
   suspensionStrength: 3000
   turnAmt: 30

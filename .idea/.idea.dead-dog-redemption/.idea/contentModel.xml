@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\print\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\print\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_dead-dog-redemption.-2003958527.00" t="ExcludeRecursive" />
+    <e p="D:\Gamestuff\Unity\dead-dog-redemption" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Entities" t="Include">
+          <e p="Car" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="CarBase.cs" t="Include" />
+              <e p="FPCarCam.cs" t="Include" />
+              <e p="Wheel.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Player" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="PlayerMovement.cs" t="Include" />
+              <e p="WalkAnimationController.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Plugins" t="Include">
+          <e p="GitHub" t="Include">
+            <e p="Editor" t="Include">
+              <e p="credits.txt" t="Include" />
+              <e p="eula.txt" t="Include" />
+              <e p="ExtensionLoader.cs" t="Include" />
+              <e p="UnityAPIWrapper.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="DriveCar.cs" t="Include" />
+          <e p="OrbitCam.cs" t="Include" />
+        </e>
+      </e>
+      <e p="dead-dog-redemption.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

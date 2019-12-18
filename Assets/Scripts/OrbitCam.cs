@@ -11,6 +11,7 @@ public class OrbitCam : MonoBehaviour
     public float maxXAngle = 85;
 
     public bool controlled;
+    public bool chase;
 
     public Vector3 offset;
     public float distance = 5;
@@ -29,7 +30,7 @@ public class OrbitCam : MonoBehaviour
             _xRot -= sensitivity * Time.deltaTime * Input.GetAxis("Mouse Y");
             _xRot = Mathf.Clamp(_xRot, -maxXAngle, maxXAngle);
 
-            transform.rotation = Quaternion.Euler(_xRot, _yRot + target.transform.eulerAngles.y, 0);
+            transform.rotation = Quaternion.Euler(_xRot, _yRot + (chase ? target.transform.eulerAngles.y : 0), 0);
             transform.position = target.transform.position + offset - distance * transform.forward;
         }
         
