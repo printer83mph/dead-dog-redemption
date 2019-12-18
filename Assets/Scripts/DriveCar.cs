@@ -55,12 +55,14 @@ public class DriveCar : MonoBehaviour
 
     private void ExitCar()
     {
+        myCar.unControl();
+        
         // Move into position
         player.gameObject.SetActive(true);
-        myCar.unControl();
         
         // move player
         player.transform.position = myCar.transform.position + Vector3.up * 2;
+        Debug.Log("Position changed");
         _inCar = false;
         
         // deactivate camera

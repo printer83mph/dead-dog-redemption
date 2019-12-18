@@ -19,6 +19,11 @@ public class OrbitCam : MonoBehaviour
     private float _yRot = 0;
     private float _xRot = 0;
 
+    void Start()
+    {
+        enabled = controlled;
+    }
+    
     void Update()
     {
 
