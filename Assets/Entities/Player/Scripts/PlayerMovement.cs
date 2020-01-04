@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public Camera fpCam;
+
+    public bool active = true;
     
     public float walkSpeed = 6f;
     public float strafeSpeed = 6f;
@@ -28,19 +30,23 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _controller = GetComponent<CharacterController>();
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        
+        SetActive(active);
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Camera controls
-        LookHorizontal();
-        LookVertical();
+        if (active)
+        {
+            // Camera controls
+            LookHorizontal();
+            LookVertical();
 
-        // Move player
-        Move();
+            // Move player
+            Move();
+        }
+        
     }
 
     void LookHorizontal()
@@ -84,4 +90,32 @@ public class PlayerMovement : MonoBehaviour
 
         _controller.Move(transform.rotation * _movement * Time.deltaTime);
     }
+
+    public void SetActive(bool isActive)
+    {
+        SetCollision(isActive);
+        
+        if (isActive)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            active = true;
+        }
+        else
+        {
+            active = false;
+        }
+    }
+
+    private void SetCollision(bool collide)
+    {
+
+        _controller.enabled = collide;
+
+        Collider[] cols = GetComponents<Collider>();
+
+        foreach (Collider col in cols) col.enabled = collide;
+    }
+    
 }

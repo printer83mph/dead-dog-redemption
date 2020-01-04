@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a284a75221afa524b83d81005ebc3184, type: 2}
+  - {fileID: 2100000, guid: 88905dee3ca129845971be0dc1db3848, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,8 +95,8 @@ Rigidbody:
   m_GameObject: {fileID: 414373150645528833}
   serializedVersion: 2
   m_Mass: 10
-  m_Drag: 1.3
-  m_AngularDrag: 1
+  m_Drag: 0.1
+  m_AngularDrag: 0.2
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -129,7 +129,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravCenterOffset: {x: 0, y: -0.2, z: 0}
-  startActive: 0
+  active: 0
+  myCamera: {fileID: 4771931828601567370}
 --- !u!1 &790702775601209854
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   torque: 0
   friction: 1000
+  damping: 35
   suspensionHeight: 0.4
   suspensionStrength: 3000
   turnAmt: 30
@@ -262,7 +264,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2579838465202590647}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &4771931828601567370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +280,6 @@ MonoBehaviour:
   target: {fileID: 3718706618561026834}
   sensitivity: 100
   maxXAngle: 85
-  controlled: 0
   chase: 0
   offset: {x: 0, y: 1, z: 0}
   distance: 7
@@ -560,8 +561,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4305dfd4f18154aa50c5979922646a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 7000
+  torque: 4000
   friction: 1000
+  damping: 40
   suspensionHeight: 0.4
   suspensionStrength: 3000
   turnAmt: 0
@@ -609,8 +611,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4305dfd4f18154aa50c5979922646a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 7000
+  torque: 4000
   friction: 1000
+  damping: 40
   suspensionHeight: 0.4
   suspensionStrength: 3000
   turnAmt: 0
@@ -738,6 +741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   torque: 0
   friction: 1000
+  damping: 35
   suspensionHeight: 0.4
   suspensionStrength: 3000
   turnAmt: 30

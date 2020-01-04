@@ -7,11 +7,10 @@ public class CarBase : MonoBehaviour
 {
     
     public Vector3 gravCenterOffset;
-    public bool startActive;
+    public bool active;
+    public PrintCam myCamera;
     
     private Wheel[] _wheels;
-
-    private bool _controlled = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,16 +18,13 @@ public class CarBase : MonoBehaviour
         GetComponent<Rigidbody>().centerOfMass = gravCenterOffset;
         _wheels = GetComponentsInChildren<Wheel> ();
 
-        if (startActive)
-        {
-            control();
-        }
+        SetActive(active);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_controlled)
+        if (active)
         {
             foreach (Wheel wheel in _wheels)
             {
@@ -37,17 +33,23 @@ public class CarBase : MonoBehaviour
         }
     }
 
-    public void control()
+    public void SetActive(bool isActive)
     {
-        _controlled = true;
-    }
-
-    public void unControl()
-    {
-        _controlled = false;
-        foreach (Wheel wheel in _wheels)
+        if (isActive)
         {
-            wheel.SetControl(0, 0);
+            active = true;
+            myCamera.SetEnabled(true);
+        }
+        else
+        {
+            active = false;
+            foreach (Wheel wheel in _wheels)
+            {
+                wheel.SetControl(0, 0);
+            }
+
+            myCamera.SetEnabled(false);
         }
     }
+    
 }

@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fpCam: {fileID: 6136419607364381153}
+  active: 1
   walkSpeed: 6
   strafeSpeed: 5
   jumpStrength: 5

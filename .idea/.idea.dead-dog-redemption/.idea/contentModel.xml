@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\print\.Rider2019.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\print\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_dead-dog-redemption.-2003958527.00" t="ExcludeRecursive" />
+    <e p="C:\Users\print\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\print\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_dead-dog-redemption.-2003958527.00" t="ExcludeRecursive" />
     <e p="D:\Gamestuff\Unity\dead-dog-redemption" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
@@ -35,6 +35,7 @@
         <e p="Scripts" t="Include">
           <e p="DriveCar.cs" t="Include" />
           <e p="OrbitCam.cs" t="Include" />
+          <e p="PrintCam.cs" t="Include" />
         </e>
       </e>
       <e p="dead-dog-redemption.sln" t="IncludeFlat" />

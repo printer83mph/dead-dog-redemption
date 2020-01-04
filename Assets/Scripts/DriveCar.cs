@@ -43,30 +43,32 @@ public class DriveCar : MonoBehaviour
 
     private void EnterCar()
     {
-        myCar.control();
-        player.gameObject.SetActive(false);
-        _inCar = true;
         
-        // activate camera
-        _carCam.Control();
+        // disable player
+        player.transform.SetParent(myCar.transform);
+        player.transform.localPosition = Vector3.zero;
+        
+        myCar.SetActive(true);
+        player.SetActive(false);
+        
+        _inCar = true;
         
         DoCooldown();
     }
 
     private void ExitCar()
     {
-        myCar.unControl();
-        
-        // Move into position
-        player.gameObject.SetActive(true);
-        
+
         // move player
+        player.transform.parent = null;
         player.transform.position = myCar.transform.position + Vector3.up * 2;
-        Debug.Log("Position changed");
-        _inCar = false;
+        player.transform.rotation = Quaternion.Euler(0, myCar.myCamera.transform.eulerAngles.y, 0);
+        Debug.Log("Player moved");
         
-        // deactivate camera
-        _carCam.Uncontrol();
+        player.SetActive(true);
+        myCar.SetActive(false);
+        
+        _inCar = false;
 
         DoCooldown();
     }

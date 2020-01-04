@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,8 @@ public class Wheel : MonoBehaviour
 {
 
     public float torque = 40;
-    public float friction;
+    public float friction = 1000;
+    public float damping = 20;
 
     public float suspensionHeight = 1;
     public float suspensionStrength = 100;
@@ -17,10 +19,10 @@ public class Wheel : MonoBehaviour
     private Vector3 _wheelObjPos;
     private Transform _wheelMeshTransform;
 
-    private float _grip = 0;
-    private float _velocity = 0;
-    private float _accel = 0;
-    private float _steer = 0;
+    private float _grip;
+    private float _velocity;
+    private float _accel;
+    private float _steer;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +54,8 @@ public class Wheel : MonoBehaviour
         {
             if (hit.distance < suspensionHeight)
             {
+                
+                Vector3 contactPoint = transform.position - hit.distance * transform.up;
 
                 // MOVE WHEEL INTO PLACE + SPIN
                 _wheelMeshTransform.localPosition = _wheelObjPos - hit.distance * Vector3.up;
@@ -60,15 +64,16 @@ public class Wheel : MonoBehaviour
                 // SET GRIP
                 _grip = Mathf.Pow(1 - (hit.distance / suspensionHeight), 2);
 
-                // TODO: ADD DAMPING TO CAR BASED ON WHEEL GRIPS
-                Vector3 velocityAtWheel = _carRigidbody.GetPointVelocity(transform.position);
-
+                // ADD DAMPING TO CAR BASED ON WHEEL GRIPS
+                Vector3 carVelAtWheel = _carRigidbody.GetPointVelocity(contactPoint);
+                Vector3 counterForce = Vector3.Dot(carVelAtWheel, transform.up) * _carRigidbody.mass * -damping * Time.deltaTime * hit.normal;
+                
                 // ADD UPWARD TO CAR
-                _carRigidbody.AddForceAtPosition(_grip * suspensionStrength * Time.deltaTime * transform.up,
+                _carRigidbody.AddForceAtPosition(_grip * suspensionStrength * Time.deltaTime * hit.normal + counterForce,
                     transform.position);
-
-                // TODO: make this ONLY USE X AND Z DIMENSIONS
-                float sideForce = Vector3.Dot(transform.right, velocityAtWheel);
+                
+                // ADD SIDE FORCE
+                float sideForce = Vector3.Dot(transform.right, carVelAtWheel);
 
                 // PUSH CAR IN RIGHT DIRECTION - bugged???
                 _carRigidbody.AddForceAtPosition(- sideForce/Mathf.Pow(Mathf.Abs(sideForce), .5f) * friction * Time.deltaTime * transform.right, transform.position);
@@ -84,6 +89,8 @@ public class Wheel : MonoBehaviour
 
                 // ADD FORWARD FORCE TO CAR
                 _carRigidbody.AddForceAtPosition(_grip * Time.deltaTime * _accel * torque * transform.forward, transform.position);
+                
+                // TODO: add braking and wheel velocity
             }
         }
 
@@ -95,10 +102,4 @@ public class Wheel : MonoBehaviour
         _steer = steer;
     }
 
-    public float getGrip()
-    {
-        // TODO: in car base, turn damping on relative to wheel grip
-        return _grip;
-    }
-    
 }
