@@ -36,6 +36,7 @@
           <e p="DriveCar.cs" t="Include" />
           <e p="OrbitCam.cs" t="Include" />
           <e p="PrintCam.cs" t="Include" />
+          <e p="PrintUtil.cs" t="Include" />
         </e>
       </e>
       <e p="dead-dog-redemption.sln" t="IncludeFlat" />

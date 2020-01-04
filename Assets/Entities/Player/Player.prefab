@@ -88,7 +88,8 @@ MonoBehaviour:
   rotateSpeed: 2
   focusRotateSpeed: 0.5
   gravity: 15
-  airControl: 1
+  airControl: 3
+  groundControl: 10
 --- !u!114 &6136419606305336783
 MonoBehaviour:
   m_ObjectHideFlags: 0
