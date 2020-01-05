@@ -28,7 +28,8 @@ public class CarBase : MonoBehaviour
         {
             foreach (Wheel wheel in _wheels)
             {
-                wheel.SetControl(Input.GetAxis("Vertical"), Input.GetAxis("Horizontal"));
+                wheel.accel = Input.GetAxis("Vertical");
+                wheel.steer = Input.GetAxis("Horizontal");
             }
         }
     }
@@ -45,7 +46,7 @@ public class CarBase : MonoBehaviour
             active = false;
             foreach (Wheel wheel in _wheels)
             {
-                wheel.SetControl(0, 0);
+                wheel.Stop();
             }
 
             myCamera.SetEnabled(false);

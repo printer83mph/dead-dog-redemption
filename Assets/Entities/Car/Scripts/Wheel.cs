@@ -13,6 +13,14 @@ public class Wheel : MonoBehaviour
     public float suspensionHeight = 1;
     public float suspensionStrength = 100;
     public float turnAmt = 20;
+    public float steerGrav = 20;
+
+    public float radius;
+    
+    // FOR CONTROLLING
+    public float accel;
+    public float steer;
+    public float brake;
 
     private GameObject _carObject;
     private Rigidbody _carRigidbody;
@@ -21,8 +29,7 @@ public class Wheel : MonoBehaviour
 
     private float _grip;
     private float _velocity;
-    private float _accel;
-    private float _steer;
+    private float _steerInterp;
 
     // Start is called before the first frame update
     void Start()
@@ -44,62 +51,71 @@ public class Wheel : MonoBehaviour
 
         _grip = 0;
         
-        // ROTATE WHEEL
-        transform.localRotation = Quaternion.Euler(0, _steer * turnAmt, 0);
+        // Steer wheel
+        _steerInterp = Mathf.Lerp(_steerInterp, steer, steerGrav * Time.deltaTime);
+        transform.localRotation = Quaternion.Euler(0, _steerInterp * turnAmt, 0);
         
-        // DISTANCE WHEEL IF NO GROUND
+        // Spin the wheel mesh and distance if no ground
+        _wheelMeshTransform.Rotate(_velocity * Time.deltaTime, 0, 0);
         _wheelMeshTransform.localPosition = _wheelObjPos - suspensionHeight * Vector3.up;
 
         if (Physics.Raycast(downRay, out hit))
         {
             if (hit.distance < suspensionHeight)
             {
-                
                 Vector3 contactPoint = transform.position - hit.distance * transform.up;
-
+                Vector3 carVelAtWheel = _carRigidbody.GetPointVelocity(contactPoint);
+                
                 // MOVE WHEEL INTO PLACE + SPIN
                 _wheelMeshTransform.localPosition = _wheelObjPos - hit.distance * Vector3.up;
-                _wheelMeshTransform.Rotate(_velocity * Time.deltaTime, 0, 0);
 
-                // SET GRIP
-                _grip = Mathf.Pow(1 - (hit.distance / suspensionHeight), 2);
+                DoPhysics(hit, carVelAtWheel);
 
-                // ADD DAMPING TO CAR BASED ON WHEEL GRIPS
-                Vector3 carVelAtWheel = _carRigidbody.GetPointVelocity(contactPoint);
-                Vector3 counterForce = Vector3.Dot(carVelAtWheel, transform.up) * _carRigidbody.mass * -damping * Time.deltaTime * hit.normal;
-                
-                // ADD UPWARD TO CAR
-                _carRigidbody.AddForceAtPosition(_grip * suspensionStrength * Time.deltaTime * hit.normal + counterForce,
-                    transform.position);
-                
-                // ADD SIDE FORCE
-                float sideForce = Vector3.Dot(transform.right, carVelAtWheel);
+                // Visual wheel rotation
 
-                // PUSH CAR IN RIGHT DIRECTION - bugged???
-                _carRigidbody.AddForceAtPosition(- sideForce/Mathf.Pow(Mathf.Abs(sideForce), .5f) * friction * Time.deltaTime * transform.right, transform.position);
+                _velocity = transform.InverseTransformVector(carVelAtWheel).z * radius * 200 * Mathf.PI;
 
-                // ADD CHUGGA CHUGGA
-                // if (powered) _velocity += Input.GetAxis("Vertical") * 10;
-                //
-                // ADD GROUND FORCE TO WHEEL
-                // TODO: CHECK IF THE WHEEL IS TOUCHING ANOTHER OBJECT
-                // Vector3 wheelVel = _velocity * transform.forward;
-                // _velocity = Mathf.Lerp(_velocity, Vector3.Dot(_carRigidbody.velocity, transform.forward), friction);
-                // _carRigidbody.AddForceAtPosition(_grip * friction * _velocity * transform.forward, transform.position);
+                return;
 
-                // ADD FORWARD FORCE TO CAR
-                _carRigidbody.AddForceAtPosition(_grip * Time.deltaTime * _accel * torque * transform.forward, transform.position);
-                
-                // TODO: add braking and wheel velocity
             }
+
+            return;
+
         }
+
+        // RUN THIS STUFF IF RAYCAST DOESN'T HIT
 
     }
 
-    public void SetControl(float accel, float steer)
+    private void DoPhysics(RaycastHit hit, Vector3 carVelAtWheel)
     {
-        _accel = accel;
-        _steer = steer;
+
+        // Get grip
+        _grip = Mathf.Pow(1 - (hit.distance / suspensionHeight), 2);
+
+        // Calculate damping counterforce
+        Vector3 counterForce = Vector3.Dot(carVelAtWheel, transform.up) * _carRigidbody.mass * -damping * Time.deltaTime * hit.normal;
+                
+        // Do normal force
+        _carRigidbody.AddForceAtPosition(_grip * suspensionStrength * Time.deltaTime * hit.normal + counterForce,
+            transform.position);
+        
+        // Do side force TODO: use brake to interp between this and just pure braking
+        float sideForce = Vector3.Dot(transform.right, carVelAtWheel);
+
+        // PUSH CAR IN RIGHT DIRECTION
+        _carRigidbody.AddForceAtPosition(- sideForce/Mathf.Pow(Mathf.Abs(sideForce), .5f) * friction * Time.deltaTime * transform.right, transform.position);
+
+        // TODO: CHECK IF THE WHEEL IS TOUCHING ANOTHER OBJECT
+        // Forward force
+        _carRigidbody.AddForceAtPosition((1 - Mathf.Pow(1 - _grip, 3)) * Time.deltaTime * accel * torque * transform.forward, transform.position);
+    }
+
+    public void Stop()
+    {
+        accel = 0;
+        steer = 0;
+        brake = 0;
     }
 
 }
