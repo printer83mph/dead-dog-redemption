@@ -52,7 +52,7 @@ public class Wheel : MonoBehaviour
         _grip = 0;
         
         // Steer wheel
-        _steerInterp = Mathf.Lerp(_steerInterp, steer, steerGrav * Time.deltaTime);
+        _steerInterp = Mathf.Lerp(_steerInterp, steer, steerGrav * Time.deltaTime / Mathf.Sqrt(_carRigidbody.velocity.sqrMagnitude + 1));
         transform.localRotation = Quaternion.Euler(0, _steerInterp * turnAmt, 0);
         
         // Spin the wheel mesh and distance if no ground
@@ -89,26 +89,25 @@ public class Wheel : MonoBehaviour
 
     private void DoPhysics(RaycastHit hit, Vector3 carVelAtWheel)
     {
+        
+        // FIX DELTA TIME STUFF
 
         // Get grip
         _grip = Mathf.Pow(1 - (hit.distance / suspensionHeight), 2);
 
         // Calculate damping counterforce
-        Vector3 counterForce = Vector3.Dot(carVelAtWheel, transform.up) * _carRigidbody.mass * -damping * Time.deltaTime * hit.normal;
+        Vector3 counterForce = Vector3.Dot(carVelAtWheel, transform.up) * _carRigidbody.mass * -damping * hit.normal * Time.deltaTime;
                 
         // Do normal force
-        _carRigidbody.AddForceAtPosition(_grip * suspensionStrength * Time.deltaTime * hit.normal + counterForce,
-            transform.position);
+        _carRigidbody.AddForceAtPosition(_grip * suspensionStrength * hit.normal + counterForce, transform.position);
         
         // Do side force TODO: use brake to interp between this and just pure braking
         float sideForce = Vector3.Dot(transform.right, carVelAtWheel);
+        _carRigidbody.AddForceAtPosition(- sideForce/Mathf.Pow(Mathf.Abs(sideForce), .1f) * friction * transform.right, transform.position);
 
-        // PUSH CAR IN RIGHT DIRECTION
-        _carRigidbody.AddForceAtPosition(- sideForce/Mathf.Pow(Mathf.Abs(sideForce), .5f) * friction * Time.deltaTime * transform.right, transform.position);
-
-        // TODO: CHECK IF THE WHEEL IS TOUCHING ANOTHER OBJECT
+        // TODO: CHECK IF THE WHEEL IS TOUCHING ANOTHER DYNAMIC OBJECT
         // Forward force
-        _carRigidbody.AddForceAtPosition((1 - Mathf.Pow(1 - _grip, 3)) * Time.deltaTime * accel * torque * transform.forward, transform.position);
+        _carRigidbody.AddForceAtPosition((1 - Mathf.Pow(1 - _grip, 3)) * accel * torque * transform.forward * Time.deltaTime, transform.position);
     }
 
     public void Stop()
