@@ -8,7 +8,7 @@ public class PhysEdit : MonoBehaviour
     void Start()
     {
         Time.fixedDeltaTime = 1.0f / Screen.currentResolution.refreshRate;
-        // Time.fixedDeltaTime = .016667f;
+        // Time.fixedDeltaTime = .1f;
     }
 
 }

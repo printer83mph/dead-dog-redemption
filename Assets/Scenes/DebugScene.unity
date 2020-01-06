@@ -814,73 +814,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8922324183893812930, guid: 1fc130ab5c4144a4c95533bda9411c22,
         type: 3}
-      propertyPath: friction
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8922324183893812930, guid: 1fc130ab5c4144a4c95533bda9411c22,
-        type: 3}
-      propertyPath: damping
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 8922324183893812930, guid: 1fc130ab5c4144a4c95533bda9411c22,
-        type: 3}
-      propertyPath: torque
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 8922324183893812930, guid: 1fc130ab5c4144a4c95533bda9411c22,
-        type: 3}
-      propertyPath: suspensionStrength
-      value: 100
+      propertyPath: suspensionHeight
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8566351413913757162, guid: 1fc130ab5c4144a4c95533bda9411c22,
         type: 3}
-      propertyPath: friction
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8566351413913757162, guid: 1fc130ab5c4144a4c95533bda9411c22,
-        type: 3}
-      propertyPath: damping
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 8566351413913757162, guid: 1fc130ab5c4144a4c95533bda9411c22,
-        type: 3}
-      propertyPath: suspensionStrength
-      value: 100
+      propertyPath: suspensionHeight
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5062611711529198395, guid: 1fc130ab5c4144a4c95533bda9411c22,
         type: 3}
-      propertyPath: friction
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5062611711529198395, guid: 1fc130ab5c4144a4c95533bda9411c22,
-        type: 3}
-      propertyPath: damping
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 5062611711529198395, guid: 1fc130ab5c4144a4c95533bda9411c22,
-        type: 3}
-      propertyPath: torque
-      value: 2000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5062611711529198395, guid: 1fc130ab5c4144a4c95533bda9411c22,
-        type: 3}
-      propertyPath: suspensionStrength
-      value: 100
+      propertyPath: suspensionHeight
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3237687094551462151, guid: 1fc130ab5c4144a4c95533bda9411c22,
         type: 3}
-      propertyPath: friction
-      value: 10
+      propertyPath: suspensionHeight
+      value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 3237687094551462151, guid: 1fc130ab5c4144a4c95533bda9411c22,
+    - target: {fileID: 8566351412835935182, guid: 1fc130ab5c4144a4c95533bda9411c22,
         type: 3}
-      propertyPath: damping
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 3237687094551462151, guid: 1fc130ab5c4144a4c95533bda9411c22,
-        type: 3}
-      propertyPath: suspensionStrength
-      value: 100
+      propertyPath: active
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fc130ab5c4144a4c95533bda9411c22, type: 3}
@@ -1068,6 +1023,11 @@ PrefabInstance:
         type: 3}
       propertyPath: sensitivity
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6136419606305336778, guid: e4de501506c50db44b47b2a1f892113f,
+        type: 3}
+      propertyPath: active
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6136419606305336782, guid: e4de501506c50db44b47b2a1f892113f,
         type: 3}

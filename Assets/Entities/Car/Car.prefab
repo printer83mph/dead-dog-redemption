@@ -595,11 +595,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4305dfd4f18154aa50c5979922646a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 50
-  friction: 30
-  damping: 1
+  torque: 85
+  friction: 13
+  damping: 0.7
   suspensionHeight: 0.5
-  suspensionStrength: 120
+  suspensionStrength: 10
   turnAmt: 0
   steerGrav: 50
   radius: 0.25
@@ -651,10 +651,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torque: 0
-  friction: 30
-  damping: 1
+  friction: 13
+  damping: 0.7
   suspensionHeight: 0.5
-  suspensionStrength: 120
+  suspensionStrength: 10
   turnAmt: 30
   steerGrav: 50
   radius: 0.25
@@ -785,10 +785,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torque: 0
-  friction: 30
-  damping: 1
+  friction: 13
+  damping: 0.7
   suspensionHeight: 0.5
-  suspensionStrength: 120
+  suspensionStrength: 10
   turnAmt: 30
   steerGrav: 50
   radius: 0.25
@@ -839,11 +839,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4305dfd4f18154aa50c5979922646a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 50
-  friction: 30
-  damping: 1
+  torque: 85
+  friction: 13
+  damping: 0.7
   suspensionHeight: 0.5
-  suspensionStrength: 120
+  suspensionStrength: 10
   turnAmt: 0
   steerGrav: 50
   radius: 0.25
