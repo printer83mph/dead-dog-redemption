@@ -62,7 +62,7 @@ public class DriveCar : MonoBehaviour
         // move player
         player.transform.parent = null;
         player.transform.position = myCar.transform.position + Vector3.up * 2;
-        player.transform.rotation = Quaternion.Euler(0, myCar.myCamera.transform.eulerAngles.y, 0);
+        player.transform.rotation = Quaternion.Euler(0, myCar.tPCamera.transform.eulerAngles.y, 0);
         Debug.Log("Player moved");
         
         player.SetActive(true);

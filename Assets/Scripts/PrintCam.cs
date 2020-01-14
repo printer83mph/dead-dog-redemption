@@ -12,6 +12,7 @@ public class PrintCam : MonoBehaviour
     public void Start()
     {
         _camera = GetComponent<Camera>();
+        OnStart();
     }
 
     public void SetEnabled(bool isEnabled)
@@ -25,5 +26,7 @@ public class PrintCam : MonoBehaviour
     public virtual void OnEnable() {}
 
     public virtual void OnDisable() {}
+
+    public virtual void OnStart() {}
 
 }
