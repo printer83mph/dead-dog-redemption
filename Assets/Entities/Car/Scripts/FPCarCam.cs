@@ -53,7 +53,7 @@ public class FPCarCam : PrintCam
 
         transform.localRotation = Quaternion.Euler(- _pos.y, 0, _pos.x);
         transform.localPosition = _startPos;
-        transform.Translate(transform.up * bodyRadius);
+        transform.Translate(Vector3.up * bodyRadius);
         
         // Mouse movement
         _rotY += Input.GetAxis("Mouse X") * Time.deltaTime * sensitivity;
