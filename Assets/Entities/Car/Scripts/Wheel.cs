@@ -7,7 +7,8 @@ public class Wheel : MonoBehaviour
 {
 
     public float torque = 40;
-    public float friction = 1000;
+    public float sideFrictionFactor = 10;
+    public float slidePower = .8f; 
     public float damping = 20;
 
     public float suspensionHeight = 1;
@@ -54,9 +55,12 @@ public class Wheel : MonoBehaviour
         _grip = 0;
         
         // Steer wheel
-        _steerInterp = Mathf.Lerp(_steerInterp, steer, steerGrav * Time.fixedDeltaTime / Mathf.Sqrt(_carRigidbody.velocity.sqrMagnitude + 1));
-        transform.localRotation = Quaternion.Euler(0, _steerInterp * turnAmt, 0);
-        
+        if (steer != _steerInterp)
+        {
+            _steerInterp = PrintUtil.LinearInterp(_steerInterp, steer, steerGrav * Time.fixedDeltaTime / Mathf.Pow(_carRigidbody.velocity.magnitude, .1f));
+            transform.localRotation = Quaternion.Euler(0, _steerInterp * turnAmt, 0);
+        }
+
         // Spin the wheel mesh and distance if no ground
         _wheelMeshTransform.Rotate(_velocity * Time.deltaTime, 0, 0);
 
@@ -97,8 +101,6 @@ public class Wheel : MonoBehaviour
 
     private void DoGroundPhysics(RaycastHit hit, Vector3 carVelAtWheel)
     {
-        
-        // FIX DELTA TIME STUFF
 
         // Get grip
         _grip = Mathf.Pow(1 - (hit.distance / suspensionHeight), 2);
@@ -109,13 +111,16 @@ public class Wheel : MonoBehaviour
         // Do normal force
         _carRigidbody.AddForceAtPosition(_grip * _carRigidbody.mass * suspensionStrength * hit.normal + counterForce, transform.position);
         
-        // Do side force TODO: use brake to interp between this and just pure braking
-        float sideForce = Vector3.Dot(transform.right, carVelAtWheel);
-        _carRigidbody.AddForceAtPosition(- sideForce/Mathf.Pow(Mathf.Abs(sideForce), .1f) * friction * transform.right, transform.position);
+        // Do side force TODO: Make this relative to mass AND ACTUALLY WORK... then use brake to interp between this and just pure braking
+        float sideFrictionComponent = Vector3.Dot(transform.right, carVelAtWheel.normalized);
+        float sideForce = Mathf.Pow(Mathf.Abs(sideFrictionComponent), slidePower) * Mathf.Sign(sideFrictionComponent);
+        // float sideSpeed = Math.Abs(transform.InverseTransformVector(carVelAtWheel).x);
+        _carRigidbody.AddForceAtPosition(- sideForce * _carRigidbody.mass * _grip * sideFrictionFactor * transform.right, transform.position);
 
         // TODO: CHECK IF THE WHEEL IS TOUCHING ANOTHER DYNAMIC OBJECT
         // Forward force
         _carRigidbody.AddForceAtPosition((1 - Mathf.Pow(1 - _grip, 3)) * accel * torque * transform.forward, transform.position);
+        
     }
 
     public void Stop()

@@ -391,14 +391,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensitivity: 100
+  maxXRotation: 180
+  minXRotation: -180
+  turnMoveScale: 0.0015
   carRigidbody: {fileID: 8566351412835935171}
   bodyRadius: 0.5
-  sideLimit: 10
-  forwardLimit: 10
-  backLimit: 4
+  sideLimit: 15
+  forwardLimit: 20
+  backLimit: 5
   bounce: 0
-  gravity: {x: 14, y: 10}
-  accelScale: {x: 4, y: 4}
+  gravity: {x: 14, y: 12}
+  accelScale: {x: 7, y: 8}
 --- !u!1 &1357778802777286235
 GameObject:
   m_ObjectHideFlags: 0
@@ -703,13 +706,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4305dfd4f18154aa50c5979922646a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 85
-  friction: 13
-  damping: 0.7
+  torque: 65
+  sideFrictionFactor: 10
+  slidePower: 2
+  damping: 0.5
   suspensionHeight: 0.5
   suspensionStrength: 10
   turnAmt: 0
-  steerGrav: 50
+  steerGrav: 5
   radius: 0.25
   accel: 0
   steer: 0
@@ -759,12 +763,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torque: 0
-  friction: 13
-  damping: 0.7
+  sideFrictionFactor: 10
+  slidePower: 2
+  damping: 0.5
   suspensionHeight: 0.5
   suspensionStrength: 10
   turnAmt: 30
-  steerGrav: 50
+  steerGrav: 5
   radius: 0.25
   accel: 0
   steer: 0
@@ -893,12 +898,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torque: 0
-  friction: 13
-  damping: 0.7
+  sideFrictionFactor: 10
+  slidePower: 2
+  damping: 0.5
   suspensionHeight: 0.5
   suspensionStrength: 10
   turnAmt: 30
-  steerGrav: 50
+  steerGrav: 5
   radius: 0.25
   accel: 0
   steer: 0
@@ -947,13 +953,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4305dfd4f18154aa50c5979922646a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 85
-  friction: 13
-  damping: 0.7
+  torque: 65
+  sideFrictionFactor: 10
+  slidePower: 2
+  damping: 0.5
   suspensionHeight: 0.5
   suspensionStrength: 10
   turnAmt: 0
-  steerGrav: 50
+  steerGrav: 5
   radius: 0.25
   accel: 0
   steer: 0
