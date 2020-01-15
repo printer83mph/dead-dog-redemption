@@ -122,7 +122,7 @@ public class Wheel : MonoBehaviour
     {
         accel = 0;
         steer = 0;
-        brake = 0;
+        brake = 1f;
     }
 
 }

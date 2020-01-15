@@ -6,21 +6,25 @@ using UnityEngine;
 public class FPCarCam : PrintCam
 {
 
-    public float sensitivity;
+    public float sensitivity = 100;
+    public float maxXRotation = 180;
+    public float minXRotation = -180;
+    public float turnMoveScale = .001f;
+    
     public Rigidbody carRigidbody;
-    public float bodyRadius;
-    public float sideLimit;
-    public float forwardLimit;
-    public float backLimit;
-    public float bounce;
-    public Vector2 gravity;
-    public Vector2 accelScale;
+    public float bodyRadius = .5f;
+    public float sideLimit = 15;
+    public float forwardLimit = 20;
+    public float backLimit = 5;
+    public float bounce = .2f;
+    public Vector2 gravity = new Vector2(10, 10);
+    public Vector2 accelScale = new Vector2(10,10);
 
     private Vector2 _pos = new Vector2(0, 0);
     private Vector2 _vel = new Vector2(0, 0);
     private Vector3 _startPos;
     private Vector3 _lastVel;
-    private float _rotY;
+    private float _yRot;
 
     public override void OnStart()
     {
@@ -39,7 +43,7 @@ public class FPCarCam : PrintCam
         
         // Debug.Log(accel);
 
-        _vel += new Vector2(accel.x * accelScale.x, accel.z * accelScale.y);
+        _vel += new Vector2(- accel.x * accelScale.x, - accel.z * accelScale.y);
         
         _vel -= Time.deltaTime * Vector2.Scale(_pos, gravity);
 
@@ -51,19 +55,29 @@ public class FPCarCam : PrintCam
         
         // Set camera transform based on funny stuff
 
-        transform.localRotation = Quaternion.Euler(- _pos.y, 0, _pos.x);
+        transform.localRotation = Quaternion.Euler(_pos.y, 0, _pos.x);
         transform.localPosition = _startPos;
         transform.Translate(Vector3.up * bodyRadius);
-        
+
+        DoMouseControl();
+    }
+
+    private void DoMouseControl()
+    {
         // Mouse movement
-        _rotY += Input.GetAxis("Mouse X") * Time.deltaTime * sensitivity;
-        _rotY %= 360;
+        _yRot += Input.GetAxis("Mouse X") * Time.deltaTime * sensitivity;
+        _yRot %= 360;
+
+        _yRot = Mathf.Clamp(_yRot, minXRotation, maxXRotation);
         
-        transform.Rotate(0, _rotY, 0);
+        transform.Translate(_yRot * turnMoveScale, 0, 0);
+        
+        transform.Rotate(0, _yRot, 0);
     }
 
     void ClampMovement()
     {
+        // Limit rotation + do bounce
         if (Mathf.Abs(_pos.x) > sideLimit)
         {
             _pos.x = Mathf.Sign(_pos.x) * sideLimit;
@@ -86,7 +100,7 @@ public class FPCarCam : PrintCam
     public override void OnEnable()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        _rotY = 0;
+        _yRot = 0;
         // TODO: reset stuff
     }
 
