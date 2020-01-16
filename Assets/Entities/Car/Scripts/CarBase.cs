@@ -11,7 +11,9 @@ public class CarBase : MonoBehaviour
     public PrintCam tPCamera;
     public PrintCam fPCamera;
     public float camDelay;
-    
+    public float autoBrakeMinSpeed = 5;
+
+    private Rigidbody _rigidbody;
     private Wheel[] _wheels;
     private bool _thirdPerson;
     private bool _switchable = true;
@@ -19,7 +21,8 @@ public class CarBase : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody>().centerOfMass = gravCenterOffset;
+        _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody.centerOfMass = gravCenterOffset;
         _wheels = GetComponentsInChildren<Wheel> ();
 
         SetActive(active);
@@ -29,11 +32,19 @@ public class CarBase : MonoBehaviour
     void Update()
     {
         if (!active) return;
+
+        float vertical = Input.GetAxis("Vertical");
+        Vector3 localVel = transform.InverseTransformVector(_rigidbody.velocity);
+        bool wrongDir = false;
+
+        wrongDir = vertical != 0 &&
+                   Mathf.Sign(localVel.z) != Mathf.Sign(vertical) && localVel.z > autoBrakeMinSpeed;
         
         foreach (Wheel wheel in _wheels)
         {
             wheel.accel = Input.GetAxis("Vertical");
             wheel.steer = Input.GetAxis("Horizontal");
+            wheel.brake = wrongDir ? 1 : Input.GetAxis("Jump");
         }
 
         if (Input.GetKeyDown("c") && _switchable)

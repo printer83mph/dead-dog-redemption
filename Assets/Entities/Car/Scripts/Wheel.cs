@@ -8,9 +8,10 @@ public class Wheel : MonoBehaviour
 
     public float torque = 40;
     public float sideFrictionFactor = 10;
-    public float slidePower = .8f; 
+    public float slidePower = .8f;
     public float damping = 20;
-
+    public float brakeFactor = 1;
+    
     public float suspensionHeight = 1;
     public float suspensionStrength = 100;
     public float turnAmt = 20;
@@ -57,7 +58,7 @@ public class Wheel : MonoBehaviour
         // Steer wheel
         if (steer != _steerInterp)
         {
-            _steerInterp = PrintUtil.LinearInterp(_steerInterp, steer, steerGrav * Time.fixedDeltaTime / Mathf.Pow(_carRigidbody.velocity.magnitude, .1f));
+            _steerInterp = PrintUtil.LinearInterp(_steerInterp, steer, steerGrav * Time.fixedDeltaTime / Mathf.Pow(_carRigidbody.velocity.magnitude, .4f));
             transform.localRotation = Quaternion.Euler(0, _steerInterp * turnAmt, 0);
         }
 
@@ -71,20 +72,10 @@ public class Wheel : MonoBehaviour
             if (hit.distance < wheelFall)
             {
                 Vector3 contactPoint = transform.position - hit.distance * transform.up;
-                Vector3 carVelAtWheel = _carRigidbody.GetPointVelocity(contactPoint);
+                Vector3 localVelocity = LocalVelocity();
                 
-                // MOVE WHEEL INTO PLACE + SPIN
-                _wheelMeshTransform.localPosition = _wheelMeshPos - hit.distance * Vector3.up;
-
-                DoGroundPhysics(hit, carVelAtWheel);
-
-                // Visual wheel rotation
-
-                _velocity = transform.InverseTransformVector(carVelAtWheel).z * radius * 200 * Mathf.PI;
-
-                _lastHeight = hit.distance;
-
-                return;
+                DoGroundPhysics(localVelocity, hit);
+                UpdateWheelMesh(localVelocity, hit.distance);
 
             }
 
@@ -99,28 +90,50 @@ public class Wheel : MonoBehaviour
 
     }
 
-    private void DoGroundPhysics(RaycastHit hit, Vector3 carVelAtWheel)
+    private Vector3 LocalVelocity() =>
+        transform.InverseTransformVector(_carRigidbody.GetPointVelocity(transform.position));
+
+    private void DoGroundPhysics(Vector3 localVelocity, RaycastHit hit)
     {
 
         // Get grip
         _grip = Mathf.Pow(1 - (hit.distance / suspensionHeight), 2);
 
         // Calculate damping counterforce
-        Vector3 counterForce = Vector3.Dot(carVelAtWheel, transform.up) * _carRigidbody.mass * -damping * hit.normal;
+        Vector3 counterForce = - localVelocity.y * _carRigidbody.mass * damping * hit.normal;
                 
         // Do normal force
         _carRigidbody.AddForceAtPosition(_grip * _carRigidbody.mass * suspensionStrength * hit.normal + counterForce, transform.position);
         
-        // Do side force TODO: Make this relative to mass AND ACTUALLY WORK... then use brake to interp between this and just pure braking
-        float sideFrictionComponent = Vector3.Dot(transform.right, carVelAtWheel.normalized);
-        float sideForce = Mathf.Pow(Mathf.Abs(sideFrictionComponent), slidePower) * Mathf.Sign(sideFrictionComponent);
-        // float sideSpeed = Math.Abs(transform.InverseTransformVector(carVelAtWheel).x);
-        _carRigidbody.AddForceAtPosition(- sideForce * _carRigidbody.mass * _grip * sideFrictionFactor * transform.right, transform.position);
+        // Do side force TODO: Make this ACTUALLY WORK... then use brake to interp between this and just pure braking
+        float frictionAmt = localVelocity.x / Mathf.Max(localVelocity.magnitude, 1);
+        float maxForce = - localVelocity.x * _carRigidbody.mass;
+        // float sideForce = - Mathf.Pow(Mathf.Abs(frictionAmt), slidePower) * Mathf.Sign(frictionAmt) * _carRigidbody.mass * sideFrictionFactor;
+        // float actualForce = Mathf.Min(Mathf.Abs(maxForce), Math.Abs(sideForce));
+        Vector3 brakeForce = new Vector3(localVelocity.x, 0, localVelocity.z) * - _carRigidbody.mass * brakeFactor;
+        // _carRigidbody.AddForceAtPosition( Mathf.Abs(frictionAmt) > .8 ? transform.TransformVector(slideForce) : (maxForce * transform.right), transform.position);
+        Vector3 bigLerp = Vector3.Lerp(maxForce * transform.right, transform.TransformVector(brakeForce), brake);
+        _carRigidbody.AddForceAtPosition( bigLerp, transform.position);
 
         // TODO: CHECK IF THE WHEEL IS TOUCHING ANOTHER DYNAMIC OBJECT
         // Forward force
-        _carRigidbody.AddForceAtPosition((1 - Mathf.Pow(1 - _grip, 3)) * accel * torque * transform.forward, transform.position);
+        Vector3 forwardForce = (1 - Mathf.Pow(1 - _grip, 3)) * accel * torque * transform.forward;
+        _carRigidbody.AddForceAtPosition(Vector3.Lerp(forwardForce, Vector3.zero, brake), transform.position);
         
+    }
+
+    private void UpdateWheelMesh( Vector3 localVelocity, float hitDistance )
+    {
+        // MOVE WHEEL INTO PLACE + SPIN
+        _wheelMeshTransform.localPosition = _wheelMeshPos - hitDistance * Vector3.up;
+                
+        // Visual wheel rotation
+
+        _velocity = localVelocity.z * radius * 200 * Mathf.PI;
+
+        _lastHeight = hitDistance;
+
+        return;
     }
 
     public void Stop()
