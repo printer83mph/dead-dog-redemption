@@ -6,16 +6,18 @@ using UnityEngine;
 public class Wheel : MonoBehaviour
 {
 
-    public float torque = 40;
-    public float sideFrictionFactor = 10;
-    public float slidePower = .8f;
-    public float damping = 20;
+    public float torque = 8;
+    public float staticFrictionFactor = 4;
+    public float dynamicFrictionFactor = 4;
+    public float slidePower = .2f;
+    public float staticFrictionBreakpoint = 6;
+    public float damping = .5f;
     public float brakeFactor = 1;
     
-    public float suspensionHeight = 1;
-    public float suspensionStrength = 100;
-    public float turnAmt = 20;
-    public float steerGrav = 20;
+    public float suspensionHeight = .5f;
+    public float suspensionStrength = 10;
+    public float turnAmt = 25;
+    public float steerGrav = 5;
 
     public float radius;
     
@@ -55,10 +57,11 @@ public class Wheel : MonoBehaviour
 
         _grip = 0;
         
-        // Steer wheel
+        // Steer wheel TODO: improve this
         if (steer != _steerInterp)
         {
-            _steerInterp = PrintUtil.LinearInterp(_steerInterp, steer, steerGrav * Time.fixedDeltaTime / Mathf.Pow(_carRigidbody.velocity.magnitude, .4f));
+            float speedCalc = Mathf.Pow(Mathf.Abs(_carRigidbody.velocity.z), .2f);
+            _steerInterp = PrintUtil.LinearInterp(_steerInterp, steer / Mathf.Max(speedCalc, 1), steerGrav * Time.fixedDeltaTime / speedCalc);
             transform.localRotation = Quaternion.Euler(0, _steerInterp * turnAmt, 0);
         }
 
@@ -105,21 +108,38 @@ public class Wheel : MonoBehaviour
         // Do normal force
         _carRigidbody.AddForceAtPosition(_grip * _carRigidbody.mass * suspensionStrength * hit.normal + counterForce, transform.position);
         
-        // Do side force TODO: Make this ACTUALLY WORK... then use brake to interp between this and just pure braking
-        float frictionAmt = localVelocity.x / Mathf.Max(localVelocity.magnitude, 1);
-        float maxForce = - localVelocity.x * _carRigidbody.mass;
-        // float sideForce = - Mathf.Pow(Mathf.Abs(frictionAmt), slidePower) * Mathf.Sign(frictionAmt) * _carRigidbody.mass * sideFrictionFactor;
-        // float actualForce = Mathf.Min(Mathf.Abs(maxForce), Math.Abs(sideForce));
-        Vector3 brakeForce = new Vector3(localVelocity.x, 0, localVelocity.z) * - _carRigidbody.mass * brakeFactor;
-        // _carRigidbody.AddForceAtPosition( Mathf.Abs(frictionAmt) > .8 ? transform.TransformVector(slideForce) : (maxForce * transform.right), transform.position);
-        Vector3 bigLerp = Vector3.Lerp(maxForce * transform.right, transform.TransformVector(brakeForce), brake);
-        _carRigidbody.AddForceAtPosition( bigLerp, transform.position);
+        // Do side force
+        float frictionAmt = - localVelocity.x;
+
+        float compNum = Math.Abs(frictionAmt) / staticFrictionBreakpoint;
+
+        float realForce;
+        if (compNum < 1)
+        {
+            // Linear accel
+            realForce = Mathf.Sign(frictionAmt) * compNum * staticFrictionFactor;
+        }
+        else
+        {
+            // Exponential accel
+            realForce = Mathf.Pow(Math.Abs(frictionAmt), slidePower) * Mathf.Sign(frictionAmt) * dynamicFrictionFactor;
+        }
+        
+        Vector3 brakeForce = new Vector3(localVelocity.x, 0, localVelocity.z) * - brakeFactor;
+
+        brakeForce /= Mathf.Pow(brakeForce.magnitude, .5f);
+
+        // if (Mathf.Abs(realForce) > Mathf.Abs(maxForce)) realForce = maxForce;
+        
+        Vector3 bigLerp = Vector3.Lerp(realForce * transform.right, transform.TransformVector(brakeForce), brake);
+        _carRigidbody.AddForceAtPosition( bigLerp, transform.position, ForceMode.Acceleration);
 
         // TODO: CHECK IF THE WHEEL IS TOUCHING ANOTHER DYNAMIC OBJECT
+        // TODO: integrate braking into forward/backward force
         // Forward force
         Vector3 forwardForce = (1 - Mathf.Pow(1 - _grip, 3)) * accel * torque * transform.forward;
-        _carRigidbody.AddForceAtPosition(Vector3.Lerp(forwardForce, Vector3.zero, brake), transform.position);
-        
+        _carRigidbody.AddForceAtPosition(Vector3.Lerp(forwardForce, Vector3.zero, brake), transform.position, ForceMode.Acceleration);
+
     }
 
     private void UpdateWheelMesh( Vector3 localVelocity, float hitDistance )

@@ -39,7 +39,6 @@ public class FPCarCam : PrintCam
         Vector3 newVel = carRigidbody.transform.InverseTransformVector(carRigidbody.GetPointVelocity(transform.position));
         Vector3 accel = (newVel - _lastVel);
         _lastVel = newVel;
-
         
         // Debug.Log(accel);
 

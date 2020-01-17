@@ -11,6 +11,7 @@ public class CarBase : MonoBehaviour
     public PrintCam tPCamera;
     public PrintCam fPCamera;
     public float camDelay;
+    public float maxSpeed = 25;
     public float autoBrakeMinSpeed = 5;
 
     private Rigidbody _rigidbody;
@@ -36,13 +37,14 @@ public class CarBase : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         Vector3 localVel = transform.InverseTransformVector(_rigidbody.velocity);
         bool wrongDir = false;
+        bool shouldAccel = Mathf.Abs(_rigidbody.velocity.z) > maxSpeed;
 
         wrongDir = vertical != 0 &&
                    Mathf.Sign(localVel.z) != Mathf.Sign(vertical) && localVel.z > autoBrakeMinSpeed;
         
         foreach (Wheel wheel in _wheels)
         {
-            wheel.accel = Input.GetAxis("Vertical");
+            wheel.accel = shouldAccel ? 0 : Input.GetAxis("Vertical");
             wheel.steer = Input.GetAxis("Horizontal");
             wheel.brake = wrongDir ? 1 : Input.GetAxis("Jump");
         }

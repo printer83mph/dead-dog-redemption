@@ -294,6 +294,7 @@ MonoBehaviour:
   tPCamera: {fileID: 4771931828601567370}
   fPCamera: {fileID: 2746225864047161624}
   camDelay: 0.5
+  maxSpeed: 25
   autoBrakeMinSpeed: 5
 --- !u!1 &799237825198312523
 GameObject:
@@ -401,8 +402,8 @@ MonoBehaviour:
   forwardLimit: 20
   backLimit: 5
   bounce: 0
-  gravity: {x: 14, y: 12}
-  accelScale: {x: 7, y: 8}
+  gravity: {x: 15, y: 15}
+  accelScale: {x: 6, y: 8}
 --- !u!1 &1357778802777286235
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,15 +708,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4305dfd4f18154aa50c5979922646a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 65
-  sideFrictionFactor: 9
-  slidePower: 0.9
+  torque: 8
+  staticFrictionFactor: 10
+  dynamicFrictionFactor: 10
+  slidePower: 0.01
+  staticFrictionBreakpoint: 3
   damping: 0.5
   brakeFactor: 1
   suspensionHeight: 0.5
   suspensionStrength: 10
   turnAmt: 0
-  steerGrav: 13
+  steerGrav: 3
   radius: 0.25
   accel: 0
   steer: 0
@@ -765,14 +768,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torque: 0
-  sideFrictionFactor: 9
-  slidePower: 0.9
+  staticFrictionFactor: 10
+  dynamicFrictionFactor: 10
+  slidePower: 0.01
+  staticFrictionBreakpoint: 3
   damping: 0.5
   brakeFactor: 1
   suspensionHeight: 0.5
   suspensionStrength: 10
-  turnAmt: 30
-  steerGrav: 13
+  turnAmt: 40
+  steerGrav: 3
   radius: 0.25
   accel: 0
   steer: 0
@@ -901,14 +906,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torque: 0
-  sideFrictionFactor: 9
-  slidePower: 0.9
+  staticFrictionFactor: 10
+  dynamicFrictionFactor: 10
+  slidePower: 0.01
+  staticFrictionBreakpoint: 3
   damping: 0.5
   brakeFactor: 1
   suspensionHeight: 0.5
   suspensionStrength: 10
-  turnAmt: 30
-  steerGrav: 13
+  turnAmt: 40
+  steerGrav: 3
   radius: 0.25
   accel: 0
   steer: 0
@@ -957,15 +964,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4305dfd4f18154aa50c5979922646a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torque: 65
-  sideFrictionFactor: 9
-  slidePower: 0.9
+  torque: 8
+  staticFrictionFactor: 10
+  dynamicFrictionFactor: 10
+  slidePower: 0.01
+  staticFrictionBreakpoint: 3
   damping: 0.5
   brakeFactor: 1
   suspensionHeight: 0.5
   suspensionStrength: 10
   turnAmt: 0
-  steerGrav: 13
+  steerGrav: 3
   radius: 0.25
   accel: 0
   steer: 0
