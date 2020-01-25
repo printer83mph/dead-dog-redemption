@@ -130,9 +130,11 @@ public class Wheel : MonoBehaviour
         brakeForce /= Mathf.Pow(brakeForce.magnitude, .5f);
 
         // if (Mathf.Abs(realForce) > Mathf.Abs(maxForce)) realForce = maxForce;
-        
-        Vector3 bigLerp = Vector3.Lerp(realForce * transform.right, transform.TransformVector(brakeForce), brake);
-        _carRigidbody.AddForceAtPosition( bigLerp, transform.position, ForceMode.Acceleration);
+        if (Mathf.Abs(realForce) > 0)
+        {
+            Vector3 bigLerp = Vector3.Lerp(realForce * transform.right, transform.TransformVector(brakeForce), brake);
+            _carRigidbody.AddForceAtPosition( bigLerp, transform.position, ForceMode.Acceleration);
+        }
 
         // TODO: CHECK IF THE WHEEL IS TOUCHING ANOTHER DYNAMIC OBJECT
         // TODO: integrate braking into forward/backward force

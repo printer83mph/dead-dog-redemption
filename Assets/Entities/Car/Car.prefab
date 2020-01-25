@@ -718,7 +718,7 @@ MonoBehaviour:
   suspensionHeight: 0.5
   suspensionStrength: 10
   turnAmt: 0
-  steerGrav: 3
+  steerGrav: 8
   radius: 0.25
   accel: 0
   steer: 0
@@ -777,7 +777,7 @@ MonoBehaviour:
   suspensionHeight: 0.5
   suspensionStrength: 10
   turnAmt: 40
-  steerGrav: 3
+  steerGrav: 8
   radius: 0.25
   accel: 0
   steer: 0
@@ -915,7 +915,7 @@ MonoBehaviour:
   suspensionHeight: 0.5
   suspensionStrength: 10
   turnAmt: 40
-  steerGrav: 3
+  steerGrav: 8
   radius: 0.25
   accel: 0
   steer: 0
@@ -974,7 +974,7 @@ MonoBehaviour:
   suspensionHeight: 0.5
   suspensionStrength: 10
   turnAmt: 0
-  steerGrav: 3
+  steerGrav: 8
   radius: 0.25
   accel: 0
   steer: 0
